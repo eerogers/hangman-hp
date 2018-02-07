@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Harry Potter Hangman</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="Hstyle.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <img id="hp" src="images/download.png" style="width:350px;height:130px;">
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+            <p>Hangman</p>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2">
+        <button id="new">Accio Word!</button>
+        </div>
+        <div class="col-md-5"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+        <div id="current-word"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Letters You've Guessed:</h3>
+            <div id="guessed"></div>
+            <h3>Guesses Remaining:</h3>
+            <div id="remGuess"></div>
+        </div>
+        <div class="col-md-6">    
+            <img id="gallows" src ="images/hangman_blank.gif" style="width:320px;height:260px;">
+        </div>
+    </div>
+</div>  
+<script
+  src="http://code.jquery.com/jquery-2.2.4.js"
+  integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    var letterGuess = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+    var word = ["hogsmeade", "quidditch", "alohomora", "buckbeak", "butterbeer", "dumbledore", "grindelwald", "slytherin", "gryffindor", "ravenclaw", "hufflepuff", "weasley", "malfoy", "seeker", "wand", "granger", "lumos", "transfiguration", "muggle", "azkaban", "dementor", "unicorn", "basilisk", "centaur", "potter", "dobby", "dragon", "voldemort", "accio", "hagrid", "crucio", "imperio", "chaser", "bludger", "snitch", "quaffle", "durmstrang", "beauxbatons", "hippogriff", "mudblood", "horcrux", "goblin", "snape", "remembrall"]
+
+    $("#new").on("click", function(){
+        var randWord = word[Math.floor(Math.random() * word.length)]
+        var remaining = 7
+        var finalBlow = 1
+        $("#remGuess").text(remaining)
+        $("#current-word").empty()
+        $("#guessed").empty()
+        $("#gallows").attr("src", "images/hangman_blank.gif")
+       
+
+        for (i=0; i<randWord.length; i++) {
+            $("#current-word").append('<span id="current-letter">' + randWord[i] + '</span>' + " ")
+        }
+
+        document.onkeyup = function (event) {
+        var letter = event.key
+        myFunction()
+
+        for (i=0; i<letterGuess.length; i++) {
+            if (letter == letterGuess[i]) {
+                $("#guessed").append(letter + "  ")
+            }
+        }
+
+        $("span").each(function() {
+            var arr = jQuery.makeArray($(this).text())
+            for (i=0; i<arr.length; i++) {
+                if (letter == arr[i]) {
+                    $(this).css("color", "black")
+                }
+            }
+        })
+        
+        function myFunction () {
+            var index = randWord.indexOf(letter)
+            console.log(index)
+            if (index < 0) {
+                remaining--
+                console.log(remaining)
+                $("#remGuess").text(remaining)
+            }
+            if (remaining === 6) {
+                $("#gallows").attr("src", "images/hangman_head.gif")
+                }
+            if (remaining === 5) {
+                $("#gallows").attr("src", "images/hangman_torso.gif")
+                }
+            if (remaining === 4) {
+                $("#gallows").attr("src", "images/hangman_arm.gif")
+                }
+            if (remaining === 3) {
+                $("#gallows").attr("src", "images/hangman_arms.gif")
+                }
+            if (remaining === 2) {
+                $("#gallows").attr("src", "images/hangman_leg.gif")
+                }
+            if (remaining === 1) {
+                $("#gallows").attr("src", "images/hangman_legs.gif")
+            }
+            if (remaining === 0) {
+                $("#gallows").attr("src", "images/hangman_wand.gif")
+            }    
+        } 
+        }
+    })
+ 
+})
+    
+</script>
+</body>
+</html>
